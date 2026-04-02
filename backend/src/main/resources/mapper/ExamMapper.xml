@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exam.mapper.ExamMapper">
+
+    <select id="findAll" resultType="Exam">
+        SELECT * FROM exam ORDER BY id DESC
+    </select>
+
+    <select id="findPage" resultType="Exam">
+        SELECT * FROM exam ORDER BY id DESC LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="countAll" resultType="int">
+        SELECT COUNT(*) FROM exam
+    </select>
+
+    <select id="findById" resultType="Exam">
+        SELECT * FROM exam WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="Exam" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO exam(exam_name, subject_id, start_time, end_time, duration, total_score, creator_id, status)
+        VALUES(#{examName}, #{subjectId}, #{startTime}, #{endTime}, #{duration}, #{totalScore}, #{creatorId}, #{status})
+    </insert>
+
+    <update id="update" parameterType="Exam">
+        UPDATE exam SET exam_name=#{examName}, subject_id=#{subjectId},
+        start_time=#{startTime}, end_time=#{endTime}, duration=#{duration},
+        total_score=#{totalScore}, status=#{status}
+        WHERE id=#{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM exam WHERE id = #{id}
+    </delete>
+
+    <insert id="insertExamQuestion">
+        INSERT INTO exam_question(exam_id, question_id) VALUES(#{examId}, #{questionId})
+    </insert>
+
+    <delete id="deleteExamQuestionsByExamId">
+        DELETE FROM exam_question WHERE exam_id = #{examId}
+    </delete>
+</mapper>

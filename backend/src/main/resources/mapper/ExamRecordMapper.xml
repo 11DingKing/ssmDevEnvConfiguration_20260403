@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exam.mapper.ExamRecordMapper">
+
+    <select id="findByStudentId" resultType="ExamRecord">
+        SELECT * FROM exam_record WHERE student_id = #{studentId} ORDER BY submit_time DESC
+    </select>
+
+    <select id="findByExamId" resultType="ExamRecord">
+        SELECT * FROM exam_record WHERE exam_id = #{examId}
+    </select>
+
+    <select id="findAll" resultType="ExamRecord">
+        SELECT er.*, u.real_name as studentName FROM exam_record er
+        LEFT JOIN user u ON er.student_id = u.id
+        ORDER BY er.submit_time DESC
+    </select>
+
+    <select id="findAllPage" resultType="ExamRecord">
+        SELECT er.*, u.real_name as studentName FROM exam_record er
+        LEFT JOIN user u ON er.student_id = u.id
+        ORDER BY er.submit_time DESC LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="countAll" resultType="int">
+        SELECT COUNT(*) FROM exam_record
+    </select>
+
+    <select id="findByStudentIdPage" resultType="ExamRecord">
+        SELECT * FROM exam_record WHERE student_id = #{studentId} ORDER BY submit_time DESC LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="countByStudentId" resultType="int">
+        SELECT COUNT(*) FROM exam_record WHERE student_id = #{studentId}
+    </select>
+
+    <select id="findByExamIdAndStudentId" resultType="ExamRecord">
+        SELECT * FROM exam_record WHERE exam_id = #{examId} AND student_id = #{studentId}
+    </select>
+
+    <insert id="insert" parameterType="ExamRecord" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO exam_record(exam_id, student_id, score, submit_time)
+        VALUES(#{examId}, #{studentId}, #{score}, NOW())
+    </insert>
+</mapper>

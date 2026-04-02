@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exam.mapper.QuestionMapper">
+
+    <select id="findAll" resultType="Question">
+        SELECT * FROM question ORDER BY id DESC
+    </select>
+
+    <select id="findPage" resultType="Question">
+        SELECT * FROM question ORDER BY id DESC LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="countAll" resultType="int">
+        SELECT COUNT(*) FROM question
+    </select>
+
+    <select id="findById" resultType="Question">
+        SELECT * FROM question WHERE id = #{id}
+    </select>
+
+    <select id="findByExamId" resultType="Question">
+        SELECT q.* FROM question q
+        INNER JOIN exam_question eq ON q.id = eq.question_id
+        WHERE eq.exam_id = #{examId}
+    </select>
+
+    <select id="findBySubjectId" resultType="Question">
+        SELECT * FROM question WHERE subject_id = #{subjectId}
+    </select>
+
+    <insert id="insert" parameterType="Question" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO question(subject_id, type, content, option_a, option_b, option_c, option_d, answer, score)
+        VALUES(#{subjectId}, #{type}, #{content}, #{optionA}, #{optionB}, #{optionC}, #{optionD}, #{answer}, #{score})
+    </insert>
+
+    <update id="update" parameterType="Question">
+        UPDATE question SET subject_id=#{subjectId}, type=#{type}, content=#{content},
+        option_a=#{optionA}, option_b=#{optionB}, option_c=#{optionC}, option_d=#{optionD},
+        answer=#{answer}, score=#{score}
+        WHERE id=#{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM question WHERE id = #{id}
+    </delete>
+</mapper>
