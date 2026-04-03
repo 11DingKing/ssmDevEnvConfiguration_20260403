@@ -7,6 +7,11 @@
 
     <display-name>考试管理系统</display-name>
 
+    <!-- Dotenv 加载器：在 Spring 初始化之前加载 .env 文件 -->
+    <listener>
+        <listener-class>com.exam.config.DotenvLoader</listener-class>
+    </listener>
+
     <!-- Spring 上下文监听器，加载 applicationContext.xml -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
